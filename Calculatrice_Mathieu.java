@@ -22,11 +22,12 @@ import javax.swing.UIManager;
 public class Calculatrice_Mathieu {
 	
 	/*
-	 * Booléen qui indique si une virgule a déjà été saisie dans le nombre false ->
-	 * aucune virgule n'a été saisie true -> une virgule a déjà été saisie
+	 * Booléen qui indique si une virgule a déjà été saisie dans le nombre 
+	 * false -> aucune virgule n'a été saisie 
+	 * true -> une virgule a déjà été saisie
 	 */
 	static boolean virgule = false;
-	private boolean notFirstOperation = false;
+	global boolean notFirstOperation = false;
 	private String operateur = ""; // string qui va contenir l'opérateur sur lequel on appuie
 	static String tab = ""; // String qui stocke temporairement le nombre saisi
 	private double resultat = 0;
