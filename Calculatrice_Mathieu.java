@@ -27,7 +27,9 @@ public class Calculatrice_Mathieu {
 	 * true -> une virgule a déjà été saisie
 	 */
 	static boolean virgule = false;
-	global boolean notFirstOperation = false;
+	static boolean op = false;
+	boolean notFirstOperation = false;
+	boolean erreur = false;
 	private String operateur = ""; // string qui va contenir l'opérateur sur lequel on appuie
 	static String tab = ""; // String qui stocke temporairement le nombre saisi
 	private double resultat = 0;
@@ -36,7 +38,6 @@ public class Calculatrice_Mathieu {
 
 	private JFrame frmCalculette;
 	private static JTextField valeur2;
-	private JTextField valeur1;
 	
 	
 	private void calcul() {
@@ -52,13 +53,17 @@ public class Calculatrice_Mathieu {
 		if (operateur.equals("/")) { // Nécessaire de faire un test si division par 0 pour renvoyer une erreur
 			// Mettre à jour l'écran avec résultat de l'opération transformé au préalable en
 			// String
+			resultat = resultat / Double.parseDouble(tab);
 		}
 	}
+	
 
 	class PlusListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			// nécessaire de tester si première opération pour enregistrer la première
 			// valeur dans resultat
+			if(op == false) {
+				op = true;
 			if (notFirstOperation) {
 				// mettre code pour afficher le résultat de la dernière opération effectuée
 				calcul(); // appel de la méthode calcul
@@ -73,11 +78,13 @@ public class Calculatrice_Mathieu {
 			}
 			operateur = "+"; // on met + dans opérateur pour pouvoir le comparer dans la méthode calcul
 		}
+		}
 	}
 
 	class MinusListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			
+			if(op == false) {
+				op = true;
 			if (notFirstOperation) {
 				// mettre code pour afficher le résultat de la dernière opération effectuée
 				calcul(); // appel de la méthode calcul
@@ -93,12 +100,14 @@ public class Calculatrice_Mathieu {
 			}
 			operateur = "-"; // on met + dans opérateur pour pouvoir le comparer dans la méthode calcul
 		}
+		}
 	}
 
 	class MultiListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			
-			if (notFirstOperation) {
+			if(op == false) {
+				op = true;
+				if (notFirstOperation) {
 				// mettre code pour afficher le résultat de la dernière opération effectuée
 				calcul(); // appel de la méthode calcul
 				System.out.println(resultat);
@@ -113,11 +122,13 @@ public class Calculatrice_Mathieu {
 			}
 			operateur = "*"; // on met + dans opérateur pour pouvoir le comparer dans la méthode calcul
 		}
+		}
 	}
 
 	class DivListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			
+			if(op == false) {
+				op=true;
 			if (notFirstOperation) {
 				// mettre code pour afficher le résultat de la dernière opération effectuée
 				calcul(); // appel de la méthode calcul
@@ -130,17 +141,18 @@ public class Calculatrice_Mathieu {
 				resultat = Double.parseDouble(tab);
 				notFirstOperation = true;
 				tab="";
-			}
+			} 
 			operateur = "/"; // on met + dans opérateur pour pouvoir le comparer dans la méthode calcul
 		}
+	}
 	}
 
 	class CleanListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			// mettre code pour afficher 0 à l'écran
 			notFirstOperation = false; // remise à false car la prochaine opération en sera une nouvelle
-			tab = "";
-			affichage = "";
+			op = false;
+			tab = affichage = "";
 			valeur2.setText(affichage);
 			resultat = 0;
 			virgule = false;
@@ -211,6 +223,7 @@ public class Calculatrice_Mathieu {
 		JButton btnNewButton = new JButton("1");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				op = false;
 				ajouter('1');
 				afficherTableau();
 			}
@@ -221,6 +234,7 @@ public class Calculatrice_Mathieu {
 		JButton btnNewButton_1 = new JButton("2");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				op = false;
 				ajouter('2');
 				afficherTableau();
 			}
@@ -231,6 +245,7 @@ public class Calculatrice_Mathieu {
 		JButton btnNewButton_2 = new JButton("3");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				op = false;
 				ajouter('3');
 				afficherTableau();
 			}
@@ -247,6 +262,7 @@ public class Calculatrice_Mathieu {
 		JButton btnNewButton_4 = new JButton("4");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				op = false;
 				ajouter('4');
 				afficherTableau();
 			}
@@ -257,6 +273,7 @@ public class Calculatrice_Mathieu {
 		JButton btnNewButton_5 = new JButton("5");
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				op = false;
 				ajouter('5');
 				afficherTableau();
 			}
@@ -267,6 +284,7 @@ public class Calculatrice_Mathieu {
 		JButton btnNewButton_6 = new JButton("6");
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				op = false;
 				ajouter('6');
 				afficherTableau();
 			}
@@ -277,6 +295,7 @@ public class Calculatrice_Mathieu {
 		JButton btnNewButton_7 = new JButton("9");
 		btnNewButton_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				op = false;
 				ajouter('9');
 				afficherTableau();
 			}
@@ -287,6 +306,7 @@ public class Calculatrice_Mathieu {
 		JButton btnNewButton_8 = new JButton("8");
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				op = false;
 				ajouter('8');
 				afficherTableau();
 			}
@@ -297,6 +317,7 @@ public class Calculatrice_Mathieu {
 		JButton btnNewButton_9 = new JButton("7");
 		btnNewButton_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				op = false;
 				ajouter('7');
 				afficherTableau();
 			}
@@ -307,6 +328,7 @@ public class Calculatrice_Mathieu {
 		JButton btnNewButton_10 = new JButton("0");
 		btnNewButton_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				op = false;
 				ajouter('0');
 				afficherTableau();
 			}
@@ -317,6 +339,7 @@ public class Calculatrice_Mathieu {
 		JButton btnNewButton_11 = new JButton(".");
 		btnNewButton_11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				op = false;
 				ajouter('.');
 			}
 		});
@@ -364,13 +387,7 @@ public class Calculatrice_Mathieu {
 		frmCalculette.getContentPane().add(valeur2);
 		valeur2.setColumns(10);
 		
-		valeur1 = new JTextField();
-		valeur1.setHorizontalAlignment(SwingConstants.RIGHT);
-		valeur1.setFont(new Font("Dialog", Font.PLAIN, 15));
-		valeur1.setBorder(null);
-		valeur1.setBounds(146, 23, 114, 20);
-		frmCalculette.getContentPane().add(valeur1);
-		valeur1.setColumns(10);
+
 		
 		actionReceived = new JLabel("");  //	making global variable
 		actionReceived.setBackground(UIManager.getColor("Button.foreground"));
