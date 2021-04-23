@@ -21,19 +21,14 @@ import javax.swing.UIManager;
 
 public class Calculatrice_Mathieu {
 	
-	/*
-	 * Booléen qui indique si une virgule a déjà été saisie dans le nombre 
-	 * false -> aucune virgule n'a été saisie 
-	 * true -> une virgule a déjà été saisie
-	 */
-	static boolean virgule = false;
-	static boolean op = false;
-	boolean notFirstOperation = false;
-	boolean erreur = false;
+	static boolean virgule = false; // Verifie qu'il n'y ait pas 2 virgules dans le nombre
+	static boolean op = false; // Verifie qu'il n'y ait pas 2 opérateurs de suite
+	boolean notFirstOperation = false; // Verifie si on entre le 1er ou le 2eme nommbre du calcul
+	boolean div0 = false;
 	private String operateur = ""; // string qui va contenir l'opérateur sur lequel on appuie
 	static String tab = ""; // String qui stocke temporairement le nombre saisi
 	private double resultat = 0;
-	private static String affichage = ""; // String qui sert à afficher le résut
+	private static String affichage = ""; // String qui sert à afficher le résultat
 	
 
 	private JFrame frmCalculette;
@@ -52,8 +47,12 @@ public class Calculatrice_Mathieu {
 		}
 		if (operateur.equals("/")) { // Nécessaire de faire un test si division par 0 pour renvoyer une erreur
 			// Mettre à jour l'écran avec résultat de l'opération transformé au préalable en
-			// String
-			resultat = resultat / Double.parseDouble(tab);
+			if(Double.parseDouble(tab) != 0.0) {
+				resultat = resultat / Double.parseDouble(tab);
+				System.out.println("réussi");
+			}else {
+				div0 = true;
+			}
 		}
 	}
 	
@@ -67,17 +66,21 @@ public class Calculatrice_Mathieu {
 			if (notFirstOperation) {
 				// mettre code pour afficher le résultat de la dernière opération effectuée
 				calcul(); // appel de la méthode calcul
-				System.out.println(resultat);
-				affichage = "" + resultat;
-				valeur2.setText(affichage);
-				tab="";
-			} else {
+				if(div0==false) {
+					System.out.println(resultat);
+					affichage = "" + resultat;
+					valeur2.setText(affichage);
+					tab="";
+				}else {
+					valeur2.setText("ERREUR");
+				}
+			}else {
 				resultat = Double.parseDouble(tab);
 				notFirstOperation = true;
 				tab="";
 			}
 			operateur = "+"; // on met + dans opérateur pour pouvoir le comparer dans la méthode calcul
-		}
+			}
 		}
 	}
 
@@ -88,11 +91,14 @@ public class Calculatrice_Mathieu {
 			if (notFirstOperation) {
 				// mettre code pour afficher le résultat de la dernière opération effectuée
 				calcul(); // appel de la méthode calcul
-				System.out.println(resultat);
-				affichage = "" + resultat;
-				valeur2.setText(affichage);
-				affichage = "";
-				tab="";
+				if(div0==false) {
+					System.out.println(resultat);
+					affichage = "" + resultat;
+					valeur2.setText(affichage);
+					tab="";
+				}else {
+					valeur2.setText("ERREUR");
+				}
 			} else {
 				resultat = Double.parseDouble(tab);
 				notFirstOperation = true;
@@ -109,19 +115,22 @@ public class Calculatrice_Mathieu {
 				op = true;
 				if (notFirstOperation) {
 				// mettre code pour afficher le résultat de la dernière opération effectuée
-				calcul(); // appel de la méthode calcul
-				System.out.println(resultat);
-				affichage = "" + resultat;
-				valeur2.setText(affichage);
-				affichage = "";
-				tab="";
-			} else {
-				resultat = Double.parseDouble(tab);
-				notFirstOperation = true;
-				tab="";
+						calcul(); // appel de la méthode calcul
+						if(div0==false) {
+							System.out.println(resultat);
+							affichage = "" + resultat;
+							valeur2.setText(affichage);
+							tab="";
+						}else {
+							valeur2.setText("ERREUR");
+						}
+				}else {
+					resultat = Double.parseDouble(tab);
+					notFirstOperation = true;
+					tab="";
+				}
+				operateur = "*"; // on met + dans opérateur pour pouvoir le comparer dans la méthode calcul
 			}
-			operateur = "*"; // on met + dans opérateur pour pouvoir le comparer dans la méthode calcul
-		}
 		}
 	}
 
@@ -129,22 +138,25 @@ public class Calculatrice_Mathieu {
 		public void actionPerformed(ActionEvent ae) {
 			if(op == false) {
 				op=true;
-			if (notFirstOperation) {
-				// mettre code pour afficher le résultat de la dernière opération effectuée
-				calcul(); // appel de la méthode calcul
-				affichage = "" + resultat;
-				valeur2.setText(affichage);
-				affichage = "";
-				System.out.println(resultat);
-				tab="";
-			} else {
-				resultat = Double.parseDouble(tab);
-				notFirstOperation = true;
-				tab="";
-			} 
-			operateur = "/"; // on met + dans opérateur pour pouvoir le comparer dans la méthode calcul
+				if (notFirstOperation) {
+					// mettre code pour afficher le résultat de la dernière opération effectuée
+						calcul(); // appel de la méthode calcul
+						if(div0==false) {
+							System.out.println(resultat);
+							affichage = "" + resultat;
+							valeur2.setText(affichage);
+							tab="";
+						}else {
+							valeur2.setText("ERREUR");
+						}
+				}else {
+					resultat = Double.parseDouble(tab);
+					notFirstOperation = true;
+					tab="";
+				} 
+				operateur = "/"; // on met + dans opérateur pour pouvoir le comparer dans la méthode calcul
+			}
 		}
-	}
 	}
 
 	class CleanListener implements ActionListener {
@@ -156,19 +168,24 @@ public class Calculatrice_Mathieu {
 			valeur2.setText(affichage);
 			resultat = 0;
 			virgule = false;
+			div0 = false;
 		}
 	}
 
 	class EqualListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			calcul();
+				calcul();
 			// mettre code pour afficher le résultat de la dernière opération effectuée
-			notFirstOperation = false; // remise à false car la prochaine opération en sera une nouvelle
-			System.out.println(resultat);
-			affichage = "" + resultat;
-			valeur2.setText(affichage);
-			affichage = "";
-			tab = "";
+				if(div0==false) {
+					System.out.println(resultat);
+					affichage = "" + resultat;
+					valeur2.setText(affichage);
+					tab="";
+					affichage = "";
+					notFirstOperation = false; // remise à false car la prochaine opération en sera une nouvelle
+				}else {
+					valeur2.setText("ERREUR");
+				}
 		}
 	}
 	
@@ -181,7 +198,7 @@ public class Calculatrice_Mathieu {
 
 	// Convertit la chaine de caratère en double et l'affiche
 	public static void afficherTableau() {
-		System.out.println("Valeur = " + Double.parseDouble(tab));
+		//System.out.println("Valeur = " + Double.parseDouble(tab));
 		affichage = "" + Double.parseDouble(tab);
 		valeur2.setText(affichage);
 	}
